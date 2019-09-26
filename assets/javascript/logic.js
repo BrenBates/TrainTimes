@@ -11,44 +11,21 @@ $(document).ready(function () {
         appId: "1:706862627732:web:c2cc6c636aeea2e62dad81"
     };
 
-
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
     // Create a variable to reference the database.
     var database = firebase.database();
 
-    //   inputEmpName
-    //   inputRole
-    //   inputStartDate
-    //   inputMonthlyRate
-
-
-    // Initial Values
-    var trainName = "";
-    var destination = "";
-    var firstTrainTime = 0;
-    var frequency = "";
-
-    var newRow = "";
-    var newIndex = "";
-    var newTD = "";
-    var dataArray = [];
-
     // Capture Button Click
     $("#add-user").on("click", function (event) {
         event.preventDefault();
 
-
         // Grabbed values from text-boxes
-        trainName = $("#inputTrainName").val().trim();
-        destination = $("#inputDestination").val().trim();
-        firstTrainTime = $("#inputFirstTrainTime").val().trim();
-        frequency = $("#inputFrequency").val().trim();
-
-
-
-
+        let trainName = $("#inputTrainName").val().trim();
+        let destination = $("#inputDestination").val().trim();
+        let firstTrainTime = $("#inputFirstTrainTime").val().trim();
+        let frequency = $("#inputFrequency").val().trim();
 
         // Code for "Setting values in the database"
         database.ref().push({
@@ -57,16 +34,9 @@ $(document).ready(function () {
             firstTrainTime: firstTrainTime,
             frequency: frequency,
         });
-
-
     });
 
     database.ref().on("child_added", function (snapshot) {
-
-
-
-
-        // Change the HTML to reflect
 
         let sv = snapshot.val();
 
@@ -97,11 +67,11 @@ $(document).ready(function () {
         console.log("Arrival Time: " + moment(nextTrain).format("hh:mm"));
 
 
+         // Change the HTML to reflect the data in a new row.
 
-        dataArray = [sv.trainName, sv.destination, sv.frequency, nextArrival, tMinutesTillTrain];
+        let dataArray = [sv.trainName, sv.destination, sv.frequency, nextArrival, tMinutesTillTrain];
 
-
-        newRow = $("<tr>");
+        let newRow = $("<tr>");
 
         for (let i = 0; i < dataArray.length; i++) {
 
@@ -110,10 +80,7 @@ $(document).ready(function () {
             $(newRow).append(newTD);
         }
 
-
         $('tbody').append(newRow);
-
-
 
         // Handle the errors
     }, function (errorObject) {
